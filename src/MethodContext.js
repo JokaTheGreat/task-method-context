@@ -8,9 +8,18 @@ import { EventEmitter } from './EventEmitter';
  */
 export const obj = {
     count: 0,
-    subscribe() {},
-    unsubscribe() {},
+    subscribe() {
+        EventEmitter.on('click', increaseCountWithContext);
+    },
+    unsubscribe() {
+        EventEmitter.off('click', increaseCountWithContext);
+    },
+    increaseCount() {
+        this.count++;
+    },
 };
+
+let increaseCountWithContext = obj.increaseCount.bind(obj);
 
 /*
 Сделайте так, чтобы метод first вызывал метод second со своими аргументами, но в обратном порядке:
@@ -19,7 +28,9 @@ obj1.first(1, 2, 3);
 // Внутренний вызов должен быть равносилен obj1.second(3, 2, 1)
  */
 export const obj1 = {
-    first(...args) {},
+    first(...args) {
+        this.second(...args.reverse());
+    },
     second() {
         // здесь ничего писать не нужно
     },
